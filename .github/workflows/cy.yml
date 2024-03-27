@@ -29,7 +29,7 @@ jobs:
       run: |
         docker ps
         ls /var/run/docker.sock
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image $IMAGE_NAME:$TAG
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --exit-code 1 --severity HIGH,CRITICAL image $IMAGE_NAME:$TAG
 
     - name: Push Docker image to Docker Hub
       run: docker push $IMAGE_NAME:$TAG
