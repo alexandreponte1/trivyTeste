@@ -27,7 +27,7 @@ jobs:
 
     - name: Scan Docker image for vulnerabilities using Trivy
       run: |
-        docker pull $IMAGE_NAME:$TAG
+        docker pull aquasec/trivy
         docker run --rm -v $(pwd):/work -w /work aquasec/trivy $IMAGE_NAME:$TAG
 
     - name: Push Docker image to Docker Hub
