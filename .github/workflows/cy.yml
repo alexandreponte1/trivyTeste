@@ -10,6 +10,7 @@ env:
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/chip
   TAG: latest
+  TRIVY_REPORT: trivy_report.json
 
 jobs:
   build_scan_and_push:
@@ -29,7 +30,7 @@ jobs:
       run: |
         docker ps
         ls /var/run/docker.sock
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --exit-code 1 --severity HIGH,CRITICAL image $IMAGE_NAME:$TAG
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --exit-code 1 --severity HIGH,CRITICAL --format json --output $TRIVY_REPORT image $IMAGE_NAME:$TAG
 
     - name: Push Docker image to Docker Hub
       run: docker push $IMAGE_NAME:$TAG
