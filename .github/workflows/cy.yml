@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/chip
   TAG: latest
@@ -29,8 +29,7 @@ jobs:
       run: |
         docker ps
         ls /var/run/docker.sock
-        docker pull aquasec/trivy
-        docker run --rm -v $(pwd):/work -w /work aquasec/trivy image $IMAGE_NAME:$TAG
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image $IMAGE_NAME:$TAG
 
     - name: Push Docker image to Docker Hub
       run: docker push $IMAGE_NAME:$TAG
