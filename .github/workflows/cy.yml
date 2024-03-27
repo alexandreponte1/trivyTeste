@@ -28,9 +28,7 @@ jobs:
 
     - name: Scan Docker image for vulnerabilities using Trivy
       run: |
-        docker ps
-        ls /var/run/docker.sock
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy --exit-code 1 --severity HIGH,CRITICAL --format json --output $TRIVY_REPORT image $IMAGE_NAME:$TAG
-
+        cat $TRIVY_REPORT
     - name: Push Docker image to Docker Hub
       run: docker push $IMAGE_NAME:$TAG
